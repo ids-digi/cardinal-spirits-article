@@ -1,107 +1,90 @@
 const data = {
-    "url": "your-url-here",
-    "slug": "Pridefest Returns",
-    "title": "Pridefest Photos",
-    "pub_date": "July 31, 2022",
-    "bylines": {
-        "Photos by": [
-            {
-                "name": "Ethan Moore",
-                "email": "ethmoore@iu.edu",
-                "twitter": "catcharron",
-                "pfp": "https://pbs.twimg.com/profile_images/1553236976928710656/_Y1q2klo_400x400.jpg",
-                "bio": "Ethan has worked at the IDS since 2019 as a reporter and designer."
-            },
-            {
-                "name": "Ashlyn Johnson",
-                "email": "catchar@iu.edu",
-                "twitter": "catcharron",
-                "pfp": "https://pbs.twimg.com/profile_images/1499562155896619014/CUD2EvuV_400x400.jpg",
-                "bio": "Ashlyn has worked at the IDS since 2019 as a reporter and designer."
-            },
-            {
-                "name": "Alex Paul",
-                "email": "catchar@iu.edu",
-                "twitter": "catcharron",
-                "pfp": "https://pbs.twimg.com/profile_images/1499562155896619014/CUD2EvuV_400x400.jpg",
-                "bio": "Alex has worked at the IDS since 2019 as a reporter and designer."
-            }
-        ]
+    "url": "cardinal-spirits-distillation-facility",
+    "slug": "Cardinal Spirits",
+    "title": "‘As slow as molasses’: Inside the Cardinal Spirits distillation facility",
+    "description": "A photo essay from inside Cardinal Spirits' Bloomington distillery as rum moves from cane syrup and molasses to bottled spirits and cocktails.",
+    "image": "https://s3.amazonaws.com/snwceomedia/ids/b8db4fef-f1b9-4033-ae9c-dc7c01f3f510.original.jpg",
+    "pub_date": "April 6, 2026",
+    "bylines": {}
+};
+
+const byline_types = ["By", "Photos by", "Design and development by", "Graphics by"];
+let bylines_html = "";
+let bios_html = "";
+
+for (const type of byline_types) {
+    const authors = data.bylines[type];
+
+    if (!authors) {
+        continue;
     }
-}
 
-// bylines
-const byline_types = ["By", "Photos by", "Design and development by", "Graphics by"]
-let bylines_html = '';
-let bios_html = '';
+    const author_list = Array.isArray(authors) ? authors : [authors];
 
-for (let type of byline_types) {
-    if (data.bylines[type]) {
-        if (data.bylines[type].length) {
-            data.bylines[type].forEach((author) => setAuthorBio(type, author));
-        } else {
-            setAuthorBio(type, data.bylines[type]);
+    author_list.forEach((author) => setAuthorBio(type, author));
+
+    bylines_html += `<p>${type}`;
+
+    author_list.forEach((author, index) => {
+        bylines_html += ` <a href="https://idsnews.com/staff/${author.name.split(" ").join("-")}">${author.name}</a>`;
+
+        if (index < author_list.length - 2) {
+            bylines_html += ",";
+        } else if (index === author_list.length - 2) {
+            bylines_html += " and";
         }
-    }
-}
+    });
 
-for (let type of byline_types) {
-    if (data.bylines[type]) {
-
-        if (!data.bylines[type].length) {
-            bylines_html += `<p>${type} <a href="https://idsnews.com/staff/${data.bylines[type].name.split(' ').join('-')}">${data.bylines[type].name}</a></p>`;
-        } else {
-            bylines_html += '<p>' + type;
-            for (let index in data.bylines[type]) {
-                bylines_html += ` <a href="https://idsnews.com/staff/${data.bylines[type][index].name.split(' ').join('-')}">${data.bylines[type][index].name}</a>`;
-                if (index != data.bylines[type].length - 2 && index != data.bylines[type].length - 1) {
-                    bylines_html += ',';
-                } else if (index == data.bylines[type].length - 2) {
-                    bylines_html += ' and';
-                }
-            }
-            bylines_html += '</p>';
-        }
-    }
-
+    bylines_html += "</p>";
 }
 
 function setAuthorBio(type, author) {
-    let twitter_link = `<span><a href="https://twitter.com/${author.twitter}" target="_blank">Twitter <i class="fab fa-twitter"></i></a></span>`;
-    let email_link = `<span style="padding-right: var(--xs); padding-left: var(--xxs);"><a
-        href="mailto:${author.email}" target="_blank">Email <i class="fa fa-envelope"></i></a></span>`;
-    if (author.pfp && author.bio) {
-        bios_html +=
-            `<div class="bio">
-                        <div>
-                            <img src="${author.pfp}" alt="${author.name}">
-                            <div>
-                            <p>${type} <a href="https://idsnews.com/staff/${author.name.split(' ').join('-')}" target="_blank">${author.name}</a></p>
-                            <p>${author.bio}  ${author.email ? email_link : ''}   ${author.twitter ? twitter_link : ''}</p>
-                            </div>
-                        </div>
-                    </div>`;
+    if (!author || !author.pfp || !author.bio) {
+        return;
     }
+
+    const links = [];
+
+    if (author.email) {
+        links.push(`<span style="padding-right: var(--xs); padding-left: var(--xxs);"><a href="mailto:${author.email}" target="_blank">Email <i class="fa fa-envelope"></i></a></span>`);
+    }
+
+    if (author.twitter) {
+        links.push(`<span><a href="https://twitter.com/${author.twitter}" target="_blank">Twitter <i class="fab fa-twitter"></i></a></span>`);
+    }
+
+    bios_html += `
+            <div class="bio">
+                <div>
+                    <img src="${author.pfp}" alt="${author.name}">
+                    <div>
+                        <p>${type} <a href="https://idsnews.com/staff/${author.name.split(" ").join("-")}" target="_blank">${author.name}</a></p>
+                        <p>${author.bio} ${links.join(" ")}</p>
+                    </div>
+                </div>
+            </div>`;
 }
 
-document.querySelector('#bylines').innerHTML = bylines_html;
-document.querySelector('.author-bios').innerHTML = bios_html;
+document.querySelector("#bylines").innerHTML = bylines_html;
+document.querySelector(".author-bios").innerHTML = bios_html;
+document.querySelector("#pubdate").innerHTML = `Published ${data.pub_date}`;
+document.querySelector("title").innerHTML = `${data.title} | Indiana Daily Student`;
+document.querySelector("#slug").innerHTML = data.slug;
 
-// pubdate
-document.querySelector('#pubdate').innerHTML = "Published " + data.pub_date;
+const social_url = `https://specials.idsnews.com/${data.url}/`;
+const fb = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(social_url)}`;
+const twitter = `https://twitter.com/intent/tweet?url=${encodeURIComponent(social_url)}&text=${encodeURIComponent(data.title)}`;
+const reddit = `https://www.reddit.com/submit?title=${encodeURIComponent(data.title)}&url=${encodeURIComponent(social_url)}`;
 
-// title & slug
-document.querySelector('title').innerHTML = data.title + ' | Indiana Daily Student';
-document.querySelector('#slug').innerHTML = data.slug;
+document.querySelector('meta[property="og:url"]').setAttribute("content", social_url);
+document.querySelector('meta[property="og:title"]').setAttribute("content", data.title);
+document.querySelector('meta[property="og:description"]').setAttribute("content", data.description);
+document.querySelector('meta[property="og:image"]').setAttribute("content", data.image);
+document.querySelector('meta[name="twitter:title"]').setAttribute("content", data.title);
+document.querySelector('meta[name="twitter:description"]').setAttribute("content", data.description);
+document.querySelector('meta[name="twitter:image"]').setAttribute("content", data.image);
 
-// socials
-let meta_twitter = document.querySelectorAll('meta[name*="twitter"]');
-let meta_og = document.querySelectorAll('meta[property*="og"]');
-let fb = `https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fspecials.idsnews.com%2F${data.url}`;
-let twitter = `https://twitter.com/intent/tweet?url=https%3A%2F%2Fspecials.idsnews.com%2F${data.url}%2F&text=${data.headline.split(' ').join('%20')}`;
-let reddit = `https://www.reddit.com/submit?title=${data.headline.split(' ').join('%20')}&url=http%3A%2F%2Fspecials.idsnews.com%2F${data.url}`;
-
-document.querySelector('li#socials').innerHTML = `
+document.querySelector("li#socials").innerHTML = `
         <a href="${fb}" target="_blank"><i class="fab fa-facebook"></i></a>
         <a href="${twitter}" target="_blank"><i class="fab fa-twitter"></i></a>
         <a href="${reddit}" target="_blank"><i class="fab fa-reddit"></i></a>
