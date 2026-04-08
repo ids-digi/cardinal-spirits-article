@@ -15,7 +15,7 @@ const data = {
 		"Design and development by": {
 			"name": "Aashish Solipuram",
 			"email": "",
-			"pfp": "s",
+			"pfp": "https://s3.amazonaws.com/snwceomedia/ids/4f2b358c-78a0-4033-b8ce-e792c5e9b416.original.jpg",
 			"bio": "Aashish has worked at the IDS since 2026 on the digital desk."
 		}
 	}
