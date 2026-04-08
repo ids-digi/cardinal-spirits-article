@@ -54,10 +54,10 @@ h2 {
   margin: 0 auto;
 }
 
-.header-caption {
-  max-width: 38rem;
-  margin: var(--md) auto 0;
-}
+/* .header-caption { */
+/*   max-width: 38rem; */
+/*   margin: var(--md) auto 0; */
+/* } */
 
 .bylines {
   margin-bottom: clamp(1.5rem, 3vw, 2.25rem);

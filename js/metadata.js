@@ -4,11 +4,24 @@ const data = {
     "title": "‘As slow as molasses’: Inside the Cardinal Spirits distillation facility",
     "description": "A photo essay from inside Cardinal Spirits' Bloomington distillery as rum moves from cane syrup and molasses to bottled spirits and cocktails.",
     "image": "https://s3.amazonaws.com/snwceomedia/ids/b8db4fef-f1b9-4033-ae9c-dc7c01f3f510.original.jpg",
-    "pub_date": "April 6, 2026",
-    "bylines": {}
+    "pub_date": "April 8, 2026",
+    "bylines": {
+		"Story and photos by": {
+            "name": "Annabel Prokopy",
+            "email": "aprokopy@iu.edu",
+            "pfp": "https://s3.amazonaws.com/snwceomedia/ids/1feb24e6-801e-4bca-90e3-dd42d37e6e91.original.jpg",
+            "bio": "Annabel Prokopy works on the photo desk at the IDS and co-hosts the IDS Weekly News Rundown podcast."
+        },
+		"Design and development by": {
+			"name": "Aashish Solipuram",
+			"email": "",
+			"pfp": "s",
+			"bio": "Aashish has worked at the IDS since 2026 on the digital desk."
+		}
+	}
 };
 
-const byline_types = ["By", "Photos by", "Design and development by", "Graphics by"];
+const byline_types = ["Story and photos by", "By", "Photos by", "Design and development by", "Graphics by"];
 let bylines_html = "";
 let bios_html = "";
 
